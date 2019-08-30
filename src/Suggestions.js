@@ -96,7 +96,7 @@ const Suggestions = props => {
                     </button>
                   </div>
                   <div class="current-page">
-                    Page {currPage} of {maxPages}
+                    Page {currPage + 1} of {maxPages}
                   </div>
                   <div class="next-button">
                     <button
