@@ -258,3 +258,47 @@ ADD SUGGESTION STYLES
 .list-suggestion {
   list-style: none;
 }
+
+.pagination-container {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-items: center;
+}
+
+.current-page {
+  margin: 0 auto;
+  color: black;
+}
+
+.prev-button>button,
+.next-button>button {
+  width: 100%;
+  border-radius: 4px;
+  height: 2rem;
+  background: linear-gradient(45.51deg, #70A9FF 6.83%, #FF79A9 86.35%);
+  display: inline-block;
+  border: none;
+  padding: 0.5rem 2rem;
+  margin-top: 10px;
+  text-decoration: none;
+  color: #ffffff;
+  font-family: sans-serif;
+  font-size: 1rem;
+  cursor: pointer;
+  text-align: center;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+.suggestion-list-wrapper {
+  display: grid;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  grid-template-columns: 1fr;
+  grid-template-rows:1fr 1fr;
+  grid-column-start: 2;
+}

@@ -23,7 +23,7 @@ const TOTAL_SUGGESTIONS = gql`
 `;
 
 const Suggestions = props => {
-  const [ currPage, setCurrPage ] = useState(0);
+  const [currPage, setCurrPage] = useState(0);
   const [maxPages, updateMaxPages] = useState(0);
 
   const {
@@ -57,40 +57,62 @@ const Suggestions = props => {
 
   const getNextPage = () => {
     setCurrPage(currPage + 1);
-    refetch({ variables: { offset: currPage, limit: 10 } })
-  }
+    refetch({ variables: { offset: currPage, limit: 10 } });
+  };
 
   const getPrevPage = () => {
     setCurrPage(currPage - 1);
-    refetch({ variables: { offset: currPage, limit: 10 } })
-  }
+    refetch({ variables: { offset: currPage, limit: 10 } });
+  };
 
   const { suggestions } = data;
   return (
     <Me>
-      {data => (
+      {data =>
         data.me && (
-        <div className="content">
-          <div className="container-content">
-            <div className="content-textarea">
-              <ul>
-                {suggestions.map(({ id, title, status }) => {
-                  return (
-                    <li key={id} className="list-suggestion">
-                      <Link to={`/suggestion/${id}`}>{title}</Link> - {status}
-                    </li>
-                  );
-                })}
-              </ul>
-              <p>Current Page: { currPage }</p>
-              <p>Next Page: <button onClick={ () => { getNextPage()}}>&gt;</button></p>
-              <p>Previous Page: <button onClick={ () => {getPrevPage()}}>&lt;</button></p>
-              <p>Total Number of Pages: { maxPages }</p>
+          <div className="content">
+            <div className="container-content">
+              <div className="suggestion-list-wrapper">
+                <div>
+                  <ul>
+                    {suggestions.map(({ id, title, status }) => {
+                      return (
+                        <li key={id} className="list-suggestion">
+                          <Link to={`/suggestion/${id}`}>{title}</Link> -{" "}
+                          {status}
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+                <div class="pagination-container">
+                  <div class="prev-button">
+                    <button
+                      onClick={() => {
+                        getPrevPage();
+                      }}
+                    >
+                      &lt;
+                    </button>
+                  </div>
+                  <div class="current-page">
+                    Page {currPage} of {maxPages}
+                  </div>
+                  <div class="next-button">
+                    <button
+                      onClick={() => {
+                        getNextPage();
+                      }}
+                    >
+                      &gt;
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
         )
-      )}
+      }
     </Me>
   );
 };
