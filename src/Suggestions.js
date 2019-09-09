@@ -85,8 +85,8 @@ const Suggestions = props => {
                     })}
                   </ul>
                 </div>
-                <div class="pagination-container">
-                  <div class="prev-button">
+                <div className="pagination-container">
+                  <div className="prev-button">
                     <button
                       onClick={() => {
                         getPrevPage();
@@ -95,10 +95,10 @@ const Suggestions = props => {
                       &lt;
                     </button>
                   </div>
-                  <div class="current-page">
+                  <div className="current-page">
                     Page {currPage + 1} of {maxPages}
                   </div>
-                  <div class="next-button">
+                  <div className="next-button">
                     <button
                       onClick={() => {
                         getNextPage();
