@@ -48,80 +48,78 @@ const UPDATE_SUGGESTION_MUTATION = gql`
 `;
 
 const Suggestion = props => {
-  const [ estado, updateEstado ] = useState('');
-  const [ comment, updateComment ] = useState('');
+  const [estado, updateEstado] = useState("");
 
-  const {
-    id
-  } = props.match.params;
+  const { id } = props.match.params;
 
-  const { loading, error, data, onCompleted  } = useQuery(SINGLE_SUGGESTION_QUERY, {
-    variables: {
-      id
-    }
-  });
-  const [ updateSuggestion, { errorM, loadingM}] = useMutation(UPDATE_SUGGESTION_MUTATION)
-  const { suggestion } = data;
-
-  useEffect(() => {
-    const onCompleted = (data) => {};
-
-    if (onCompleted) {
-      if(data.suggestion && data.suggestion.status) {
-        updateEstado(data.suggestion.status);
+  const { loading, error, data, onCompleted } = useQuery(
+    SINGLE_SUGGESTION_QUERY,
+    {
+      variables: {
+        id
       }
     }
-  }, [data]);
-
-  function changeComment (e) {
-    updateComment(e.target.value);
-  }
+  );
+  const [updateSuggestion, { errorM, loadingM }] = useMutation(
+    UPDATE_SUGGESTION_MUTATION
+  );
+  const { suggestion } = data;
 
   if (error || errorM) return <p>...ERROR...</p>;
   if (loading || loadingM) return <p>...LOADING</p>;
 
-
-  const submitForm = (e) => {
+  const submitForm = e => {
+    console.log(`ESTADO: ${estado}`)
     e.preventDefault();
-    updateSuggestion({
-      variables: {
-        id: suggestion.id,
-        visible: true,
-        status: estado,
-        comment
-      }
-    })
+    if ( estado != '' ) {
+      updateSuggestion({
+        variables: {
+          id: suggestion.id,
+          visible: true,
+          status: estado
+        }
+      });
+    }
+    updateEstado("");
+  };
 
-    updateEstado('');
-    updateComment('');
+  const handleEstado = (val) => {
+    // e.preventDefault();
+    var that = this;
+    console.log('caller: ', that)
+    updateEstado(val);
   }
 
   return (
-      <Me>
+    <Me>
       {data => (
-    <div className="content">
+        <div className="content">
       <div className="container-content">
-        <div className="content-textarea">
-          <form onSubmit={submitForm}>
-          <h1>{suggestion.title}</h1>
-          <h5>{new Date(suggestion.created_at).toLocaleDateString()}</h5>
-          <textarea readOnly value={suggestion.suggestion} />
-            { estado === 'CONDITIONAL' ? 
-              <textarea onChange={ changeComment } /> : ''
-            }
-          <select onChange={(e) => updateEstado(e.target.value)} disabled={!data.me} value={estado}>
-            <option value=""></option>
-            <option value="APPROVED">Approved</option>
-            <option value="NOT_APPROVED">Not Approved</option>
-            <option value="CONDITIONAL">Conditional</option>
-          </select>
-          <button type='submit' disabled={!data.me}>Confirm</button>
-          </form>
-        </div>
-      </div>
-    </div>
+        <div className="suggestion-wrapper">
+              <form onSubmit={submitForm}>
+              <div className='suggestion-title'>
+                <h1>{suggestion.title }</h1>
+              </div>
+              <div className='suggestion-content'>
+                <textarea readOnly value={suggestion.suggestion} />
+              </div>
+              <div className='suggestion-decision'>
+              <div className='suggestion-refused'>
+                <span className='btn-nok' onClick = { () => handleEstado('NOT_APPROVED')}>Not Approved</span>
+              </div>
+              <div className='suggestion-approved'>
+                <span className='btn-ok' onClick = { () => handleEstado('APPROVED') }>Approved</span>
+              </div>
+              </div>
+              <div className='suggestion-submit'>
+                <button type="submit" disabled={estado===''} className={ estado !== '' ? 'btn-submit' : 'btn-disabled'}>Confirm</button>
+              </div>
+              </form>
+              </div>
+              </div>
+              </div>
       )}
-      </Me>
+    </Me>
   );
 };
 
